@@ -18,9 +18,13 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.3"),
     ],
     targets: [
+//        .binaryTarget(
+//            name: "GOJQBinding",
+//            path: "Frameworks/GOJQBinding.xcframework"),
         .binaryTarget(
             name: "GOJQBinding",
-            path: "Frameworks/GOJQBinding.xcframework"),
+            url: "https://github.com/cockscomb/swift-gojq/releases/download/0.1.0/GOJQBinding.xcframework.zip",
+            checksum: "1c45710de17fb7020dcfc75105344729725c5e3875e7058e98790e5f4e178162"),
         .target(
             name: "SwiftGoJq",
             dependencies: [
