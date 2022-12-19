@@ -2,8 +2,10 @@ package binding
 
 import (
 	"encoding/json"
-	"github.com/itchyny/gojq"
 	"io"
+
+	"github.com/itchyny/gojq"
+	_ "golang.org/x/mobile/bind"
 )
 
 type Query struct {
