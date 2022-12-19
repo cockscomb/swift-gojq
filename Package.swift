@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-gojq",
+    name: "SwiftGoJq",
     platforms: [
         .macOS(.v13),
         .macCatalyst(.v14),
@@ -11,22 +11,26 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "swift-gojq",
-            targets: ["swift-gojq"]),
+            name: "SwiftGoJq",
+            targets: ["SwiftGoJq"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.3"),
     ],
     targets: [
         .binaryTarget(
             name: "GOJQBinding",
             path: "Frameworks/GOJQBinding.xcframework"),
         .target(
-            name: "swift-gojq",
+            name: "SwiftGoJq",
             dependencies: [
                 "GOJQBinding",
             ]),
         .testTarget(
-            name: "swift-gojqTests",
-            dependencies: ["swift-gojq"]),
+            name: "SwiftGoJqTests",
+            dependencies: [
+                "SwiftGoJq",
+                .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
+            ]),
     ]
 )
