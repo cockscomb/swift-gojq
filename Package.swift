@@ -21,8 +21,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "GOJQBinding",
-            url: "https://github.com/cockscomb/swift-gojq/releases/download/0.1.3/GOJQBinding.xcframework.zip",
-            checksum: "375656af225e53be2f80883afdd6117b3e2a6d9764924756032fcc7668d2baa9"),
+            url: "https://github.com/cockscomb/swift-gojq/releases/download/0.1.4/GOJQBinding.xcframework.zip",
+            checksum: "f6b04f34d358677a5d00f31ab4c80aa2062d43b2bc480d8356f44abd05e5aea9"),
         .target(
             name: "SwiftGoJq",
             dependencies: [
