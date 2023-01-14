@@ -28,9 +28,9 @@ final class QueryTests: XCTestCase {
     }
 
     func testRun_array() async throws {
-        let query = try Query(".[]")
+        let query = try Query(".[].key")
         let results = try await Array(try query.run("""
-        ["value1", "value2"]
+        [{"key": "value1"}, {"key": "value2"}]
         """))
         XCTAssertEqual(results, ["\"value1\"", "\"value2\""])
     }
