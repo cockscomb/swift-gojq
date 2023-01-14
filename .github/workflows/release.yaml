@@ -1,0 +1,75 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Bump version'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - major
+        - minor
+        - patch
+
+jobs:
+  release:
+    name: Release
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_14.2.app
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Build XCFramework
+        run: |
+          make zip
+
+      - name: Compute checksum
+        id: checksum
+        run: |
+          echo "checksum=$(swift package compute-checksum Frameworks/GOJQBinding.xcframework.zip)" >> $GITHUB_OUTPUT
+      
+      - name: Calculate next version
+        id: next_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: ${{ github.event.inputs.bump }}
+          tag_prefix: ''
+          dry_run: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.next_version.outputs.new_tag }}
+          draft: true
+          body: ${{ steps.next_version.outputs.changelog }}
+          files: Frameworks/GOJQBinding.xcframework.zip
+
+      - name: Rewrite Package.swift
+        run: |
+          swift package \
+            --allow-writing-to-package-directory \
+            rewrite-package-binary-target \
+            --url=https://github.com/cockscomb/swift-gojq/releases/download/${{ steps.next_version.outputs.new_tag }}/GOJQBinding.xcframework.zip \
+            --checksum=${{ steps.checksum.outputs.checksum }} \
+            Package.swift \
+            GOJQBinding 
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Bump version to ${{ steps.next_version.outputs.new_tag }}
+
+      - name: Bump version
+        id: bump_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: ${{ github.event.inputs.bump }}
+          tag_prefix: ''
