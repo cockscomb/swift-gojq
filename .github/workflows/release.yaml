@@ -44,7 +44,7 @@ jobs:
           tag_prefix: ''
           dry_run: true
 
-      - name: Release
+      - name: Draft release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.next_version.outputs.new_tag }}
@@ -73,3 +73,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: ${{ github.event.inputs.bump }}
           tag_prefix: ''
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.next_version.outputs.new_tag }}
