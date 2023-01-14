@@ -16,11 +16,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.3"),
+        .package(url: "https://github.com/cockscomb/swift-package-checksum-rewriter", from: "0.1.0"),
     ],
     targets: [
-//        .binaryTarget(
-//            name: "GOJQBinding",
-//            path: "Frameworks/GOJQBinding.xcframework"),
         .binaryTarget(
             name: "GOJQBinding",
             url: "https://github.com/cockscomb/swift-gojq/releases/download/0.1.0/GOJQBinding.xcframework.zip",
